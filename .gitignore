@@ -1,0 +1,8 @@
+.DS_Store
+.jshintrc
+.project
+/.settings
+.sublime-project
+.tern-project
+config.js
+/node_modules
