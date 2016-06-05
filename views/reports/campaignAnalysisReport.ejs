@@ -1,0 +1,68 @@
+<% include ./../header.ejs %>
+<div ng-app="moneyReportApp" class="row-fluid" ng-controller="formCtrl">
+  <div class="span12">
+	  <form class="form-horizontal" role="form">
+	  <legend>Campaign Analysis</legend>
+	  
+	  <!--Multiple IDs can be seperated by comma, for example '100,101,102'-->
+	  <div class="form-group">
+	    <label class="control-label col-sm-2">Campaign ID</label>
+	    <div class="col-sm-10">
+	    <input type="text" id="startDate" ng-model="reportRequest.campaignId">
+	    </div>
+	  </div>
+	  
+	  <div class="form-group">
+	    <label class="control-label col-sm-2">Start Date</label>
+	    <div class="col-sm-10">
+	    <input type="text" id="startDate" ng-model="reportRequest.startDate">
+	    </div>
+	  </div>
+	  
+	  <div class="form-group">
+	    <label class="control-label col-sm-2">End Date</label>
+	    <div class="col-sm-10"">
+	    <input type="text"id="endDate" ng-model="reportRequest.endDate">
+	    </div>
+	  </div>
+	  
+	  <div class="form-group">
+	    <div  class="col-sm-offset-2 col-sm-10">
+	    <button type="submit" class="btn btn-primary" ng-click="generateReport()">Generate Report</button>
+	    </div>
+	  </div>
+	  </form>
+  </div>
+</div>
+
+<script>
+var app = angular.module('moneyReportApp', []);
+app.controller('formCtrl', function($scope,$http) {
+    $scope.generateReport = function() {
+
+    $http({
+        url: '/reports/comparePublishers',
+        method: 'POST',
+        responseType: 'arraybuffer',
+        data: $scope.reportRequest, //this is your json data string
+        headers: {
+            'Content-type': 'application/json',
+            'Accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        }
+    }).success(function(data){
+        var blob = new Blob([data], {
+            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        });
+        saveAs(blob, 'monetization_report' + '.xlsx');
+    }).error(function(){
+        //Some error log
+       alert('Failed to get the report data!')
+    });
+
+
+    };
+});
+</script>
+
+
+<% include ./../footer.ejs %>

@@ -7,7 +7,9 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
-var monetization = require('./routes/reports/monetization.js');
+var comparisonPublisers = require('./routes/reports/comparePublishers.js');
+var compaignAnalysis = require('./routes/reports/campaignAnalysis.js');
+
 var utils = require('./utils/utils');
 
 var app = express();
@@ -26,7 +28,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
-app.use('/reports/monetization', monetization);
+app.use('/reports/comparePublishers', comparisonPublisers);
+app.use('/reports/campaignAnalysis', compaignAnalysis);
+
 
 // app.get('/users/list',users.list);
 app.listen(8080);
