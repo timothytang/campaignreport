@@ -39,7 +39,6 @@ fileUtil.prototype.sendAsXlsxFile=function (response, data, fileName) {
 //        'Content-Disposition': 'attachment;filename='+fileName + '.xlsx'
     });    
     var obj =[{name: "data", data: xlsxData}]
-    console.log('Report Data: ' + JSON.stringify(obj));
     var file = xlsx.build(obj); 
     response.write(file);
     response.end();    

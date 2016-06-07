@@ -76,19 +76,148 @@
  bundle                   	 character varying(128)      	,
  app_site_id              	 character varying(128)      	);
 
- insert into Campaign_daily_summary(campaign_id,publisher_id, pub_gross_revenue,ad_impression,click,timestamp) 
-                             values(10000000001,541, 200.01,10000001,1001,'2016-05-30 00:00:00');
- insert into Campaign_daily_summary(campaign_id,publisher_id, pub_gross_revenue,ad_impression,click,timestamp) 
-                             values(10000000002,546, 200.02,10000002,1002,'2016-05-30 00:00:00') ;  
- insert into Campaign_daily_summary(campaign_id,publisher_id, pub_gross_revenue,ad_impression,click,timestamp) 
-                             values(10000000003,536, 200.03,10000003,1003,'2016-05-30 00:00:00') ;    
- insert into Campaign_daily_summary(campaign_id,publisher_id, pub_gross_revenue,ad_impression,click,timestamp) 
-                             values(10000000004,544, 200.04,10000004,1004,'2016-05-30 00:00:00') ;     
- insert into Campaign_daily_summary(campaign_id,publisher_id, pub_gross_revenue,ad_impression,click,timestamp) 
-                             values(10000000005,543, 200.05,10000005,1005,'2016-05-30 00:00:00') ;  
-insert into Campaign_daily_summary(campaign_id,publisher_id, pub_gross_revenue,ad_impression,click,timestamp) 
-                             values(10000000006,549, 200.06,10000006,1006,'2016-05-30 00:00:00') ;
-insert into Campaign_daily_summary(campaign_id,publisher_id, pub_gross_revenue,ad_impression,click,timestamp) 
-                             values(10000000007,548, 200.07,10000007,1007,'2016-05-30 00:00:00') ; 
-insert into Campaign_daily_summary(campaign_id,publisher_id, pub_gross_revenue,ad_impression,click,timestamp) 
-                             values(10000000008,551, 200.08,10000008,1008,'2016-05-30 00:00:00') ;                                                         
+ insert into Campaign_daily_summary(campaign_id,publisher_id,xad_gross_revenue, pub_gross_revenue,ad_impression,click,timestamp, creative_id, adgroup_id,mslocation_id, traffic_src) 
+                             values(10000000001,541,50.1, 200.01,10000001,1001,'2016-05-30 00:00:00', 101,201,301, ':weibo');
+ insert into Campaign_daily_summary(campaign_id,publisher_id,xad_gross_revenue, pub_gross_revenue,ad_impression,click,timestamp, creative_id, adgroup_id,mslocation_id, traffic_src)  
+                             values(10000000002,546,50.2, 200.02,10000002,1002,'2016-05-30 00:00:00', 102,202,302, ':wexin') ;  
+ insert into Campaign_daily_summary(campaign_id,publisher_id,xad_gross_revenue, pub_gross_revenue,ad_impression,click,timestamp, creative_id, adgroup_id,mslocation_id, traffic_src)  
+                             values(10000000003,536,50.3, 200.03,10000003,1003,'2016-05-30 00:00:00', 103,203,303,':qq') ;    
+ insert into Campaign_daily_summary(campaign_id,publisher_id,xad_gross_revenue, pub_gross_revenue,ad_impression,click,timestamp, creative_id, adgroup_id,mslocation_id, traffic_src)  
+                             values(10000000004,544,50.4,200.04,10000004,1004,'2016-05-30 00:00:00', 104,204,304,':com.reader') ;     
+ insert into Campaign_daily_summary(campaign_id,publisher_id,xad_gross_revenue, pub_gross_revenue,ad_impression,click,timestamp, creative_id, adgroup_id,mslocation_id, traffic_src)  
+                             values(10000000005,543,50.5, 200.05,10000005,1005,'2016-05-30 00:00:00', 105,205,305,':com.test') ;  
+ insert into Campaign_daily_summary(campaign_id,publisher_id,xad_gross_revenue, pub_gross_revenue,ad_impression,click,timestamp, creative_id, adgroup_id,mslocation_id, traffic_src)  
+                             values(10000000006,549,50.6, 200.06,10000006,1006,'2016-05-30 00:00:00', 106,206,306, ':com.abc') ;
+ insert into Campaign_daily_summary(campaign_id,publisher_id,xad_gross_revenue, pub_gross_revenue,ad_impression,click,timestamp, creative_id, adgroup_id,mslocation_id, traffic_src)  
+                             values(10000000007,548,50.7,200.07,10000007,1007,'2016-05-30 00:00:00', 107,207,307,':com.reader') ; 
+ insert into Campaign_daily_summary(campaign_id,publisher_id,xad_gross_revenue, pub_gross_revenue,ad_impression,click,timestamp, creative_id, adgroup_id,mslocation_id, traffic_src)  
+                             values(10000000008,551,50.8,200.08,10000008,1008,'2016-05-30 00:00:00', 108,208,308,':com.reader') ;  
+
+
+create table campaign_dimension
+(campaign_id      		 bigint                 	,
+ company_id       		 bigint                 	,
+ company_name     		 character varying(128) 	,
+ account_id       		 bigint                 	,
+ account_name     		 character varying(128) 	,
+ account_type     		 character varying(48)  	,
+ market           		 character varying(10)  	,
+ ad_vendor_id     		 bigint                 	,
+ campaign_status  		 character varying(10)  	,
+ campaign_name    		 character varying(256) 	,
+ start_date       		 date                   	,
+ end_date         		 date                   	,
+ budget_type      		 character varying(256) 	,
+ sales_manager    		 character varying(256) 	,
+ ops_manager      		 character varying(256) 	,
+ campaign_manager 		 character varying(256) 	,
+ region_name      		 character varying(255) 	,
+ subregion_name   		 character varying(255) 	);
+
+insert into campaign_dimension(campaign_id, campaign_name) values(10000000001, 'Camp1');
+insert into campaign_dimension(campaign_id, campaign_name) values(10000000002, 'Camp2');
+insert into campaign_dimension(campaign_id, campaign_name) values(10000000003, 'Camp3');
+insert into campaign_dimension(campaign_id, campaign_name) values(10000000004, 'Camp4');
+insert into campaign_dimension(campaign_id, campaign_name) values(10000000005, 'Camp5');
+insert into campaign_dimension(campaign_id, campaign_name) values(10000000006, 'Camp6');
+insert into campaign_dimension(campaign_id, campaign_name) values(10000000007, 'Camp7');
+insert into campaign_dimension(campaign_id, campaign_name) values(10000000008, 'Camp8');
+
+
+create table adgroup_dimension
+(campaign_id    	 bigint                 	,
+ adgroup_id     	 bigint                 	,
+ mobilesite_id  	 bigint                 	,
+ market         	 character varying(10)  	,
+ adgroup_name   	 character varying(256) 	,
+ adgroup_status 	 character varying(10)  	,
+ adgroup_type   	 character varying(10)  	,
+ start_date     	 date                   	,
+ end_date       	 date                   	,
+ adv_bid_type   	 character varying(25)  	,
+ adv_bid_rate   	 numeric(14,6)          	)
+
+insert into adgroup_dimension (campaign_id, adgroup_id, adgroup_name) values(10000000001,201,'group 1' );
+insert into adgroup_dimension (campaign_id, adgroup_id, adgroup_name) values(10000000002,202,'group 2' );
+insert into adgroup_dimension (campaign_id, adgroup_id, adgroup_name) values(10000000003,203,'group 3' );
+insert into adgroup_dimension (campaign_id, adgroup_id, adgroup_name) values(10000000004,204,'group 4' );
+insert into adgroup_dimension (campaign_id, adgroup_id, adgroup_name) values(10000000005,205,'group 5' );
+insert into adgroup_dimension (campaign_id, adgroup_id, adgroup_name) values(10000000006,206,'group 6' );
+insert into adgroup_dimension (campaign_id, adgroup_id, adgroup_name) values(10000000007,207,'group 7' );
+insert into adgroup_dimension (campaign_id, adgroup_id, adgroup_name) values(10000000008,208,'group 8' );
+
+
+create table creative_dimension
+( creative_id        bigint                 	,
+ adgroup_id        	 bigint                 	,
+ creative_name     	 character varying(512) 	,
+ creative_type     	 character varying(64)  	,
+ landing_page_type 	 character varying(64)  	);
+
+insert into creative_dimension (creative_id, adgroup_id,creative_name) values(101,201, 'Creative 1');
+insert into creative_dimension (creative_id, adgroup_id,creative_name) values(102,202, 'Creative 2');
+insert into creative_dimension (creative_id, adgroup_id,creative_name) values(103,203, 'Creative 3');
+insert into creative_dimension (creative_id, adgroup_id,creative_name) values(104,204, 'Creative 4');
+insert into creative_dimension (creative_id, adgroup_id,creative_name) values(105,205, 'Creative 5');
+insert into creative_dimension (creative_id, adgroup_id,creative_name) values(106,206, 'Creative 6');
+insert into creative_dimension (creative_id, adgroup_id,creative_name) values(107,207, 'Creative 7');
+insert into creative_dimension (creative_id, adgroup_id,creative_name) values(108,208, 'Creative 8');
+
+
+create table publisher_dimension
+(publisher_id    	 bigint                 	,
+ publisher_appid 	 character varying(45)  	,
+ publisher_name  	 character varying(256) 	,
+ publisher_tier  	 character varying(10)  	,
+ publisher_type  	 character varying(10)  	,
+ currency        	 character varying(3)   	);
+
+insert into publisher_dimension(publisher_id,publisher_appid,publisher_name) values (541, 'Weibo','Weibo');
+insert into publisher_dimension(publisher_id,publisher_appid,publisher_name) values (546, 'GDT1','GDT1');
+insert into publisher_dimension(publisher_id,publisher_appid,publisher_name) values (556, 'GDT2','GDT2');
+insert into publisher_dimension(publisher_id,publisher_appid,publisher_name) values (557, 'GDT3','GDT3');
+insert into publisher_dimension(publisher_id,publisher_appid,publisher_name) values (536, 'Adview1','Adview1');
+insert into publisher_dimension(publisher_id,publisher_appid,publisher_name) values (526, 'Adview2','Adview2');
+insert into publisher_dimension(publisher_id,publisher_appid,publisher_name) values (535, 'Adview3','Adview3');
+insert into publisher_dimension(publisher_id,publisher_appid,publisher_name) values (539, 'Adview4','Adview4');
+insert into publisher_dimension(publisher_id,publisher_appid,publisher_name) values (534, 'Adview5','Adview5');
+insert into publisher_dimension(publisher_id,publisher_appid,publisher_name) values (544, 'Xunfei','Xunfei');
+insert into publisher_dimension(publisher_id,publisher_appid,publisher_name) values (543, 'Momo','Momo');
+insert into publisher_dimension(publisher_id,publisher_appid,publisher_name) values (549, 'JD','JD');
+insert into publisher_dimension(publisher_id,publisher_appid,publisher_name) values (548, 'Zplay','Zplay');
+insert into publisher_dimension(publisher_id,publisher_appid,publisher_name) values (551, 'Sohu','Sohu');
+
+
+create table bizlocation_dimension
+(location_id   	 bigint                 	,
+ mobilesite_id 	 bigint                 	,
+ location_type 	 character varying(255) 	,
+ business_name 	 character varying(255) 	,
+ location_name 	 character varying(255) 	,
+ address1      	 character varying(255) 	,
+ address2      	 character varying(255) 	,
+ city          	 character varying(127) 	,
+ state         	 character varying(127) 	,
+ zipcode       	 character varying(127) 	,
+ country       	 character varying(127) 	,
+ latitude      	 numeric(14,6)          	,
+ longitude     	 numeric(14,6)          	);
+
+
+insert into bizlocation_dimension(location_id, mobilesite_id,location_type,location_name,address1,city, state)
+	values(301,1,'Local','Location1','addr1','Shanghai','Shanghai');
+insert into bizlocation_dimension(location_id, mobilesite_id,location_type,location_name,address1,city, state)
+	values(302,2,'Local','Location2','addr2','Shanghai','Shanghai');
+insert into bizlocation_dimension(location_id, mobilesite_id,location_type,location_name,address1,city, state)
+	values(303,3,'Local','Location3','addr3','Beijing','Beijing');
+insert into bizlocation_dimension(location_id, mobilesite_id,location_type,location_name,address1,city, state)
+	values(304,4,'Local','Location4','addr4','Beijing','Beijing');
+insert into bizlocation_dimension(location_id, mobilesite_id,location_type,location_name,address1,city, state)
+	values(305,5,'Local','Location5','addr5','Suzhou','Jiangsu');
+insert into bizlocation_dimension(location_id, mobilesite_id,location_type,location_name,address1,city, state)
+	values(306,6,'Local','Location6','addr6','Changzhou','Jiangsu');
+insert into bizlocation_dimension(location_id, mobilesite_id,location_type,location_name,address1,city, state)
+	values(307,7,'National','NULL','NULL','NULL','NULL');
+insert into bizlocation_dimension(location_id, mobilesite_id,location_type,location_name,address1,city, state)
+	values(308,8,'Local','Location1','addr1','Liyang','Jiangsu');
+

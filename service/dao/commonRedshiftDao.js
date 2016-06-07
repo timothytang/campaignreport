@@ -19,11 +19,13 @@ redshiftDao.prototype.query=function(query, callback) {
 			console.error('error fetching client from pool', err);
 			return callback(err, null);
 		}
+	    console.log('Runing query: ' + query);
 	  	client.query(query, function(err, result) {
 		  	if(err) {
-		        console.error('error running query: ' + query, err);
+		        console.error('Runing query failed!', err);
 				return callback(err, null);
 		    } else {
+		    	console.log('Runing query succeeded.');
 		    	return callback(null, result.rows);
 		    }
 		  }

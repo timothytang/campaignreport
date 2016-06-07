@@ -78,9 +78,7 @@ router.post('/', function (req, res) {
          console.error('Error happened when generate monetization report: ' + err);
       } else {
     	 mergeXadAndPublisherResult(xadResult,publisersResult);
-    	 var timestamp = new Date();
-    	 var fileName = 'monetizationReport_'+ timestamp.format('yyyyMMddhhmmss');
-    	 fileUtil.sendAsXlsxFile(res,xadResult, fileName);
+    	 fileUtil.sendAsXlsxFile(res,xadResult, null);
       }
     });
 
