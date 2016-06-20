@@ -1,21 +1,21 @@
 <% include ./../header.ejs %>
-<div ng-app="campaignApp" class="row-fluid" ng-controller="campaignCtrl">
+<div id="mainDiv" class="row-fluid">
   <div class="span12">
-	  <form class="form-horizontal" role="form">
+	  <form name="campaignAnalysisForm" ng-app="campaignApp" ng-controller="campaignCtrl" class="form-horizontal" role="form" novalidate>
 		  <legend>Campaign Analysis</legend>
 		  
 		  <div class="col-md-4 ">
 			  <div class="form-group">
 			    <label class="control-label col-md-6">Start Date</label>
 			    <div class="col-md-6">
-			    <input type="text" id="startDate" ng-model="reportRequest.startDate">
+			    <input type="text" placeholder="yyyy-MM-dd" name="startDate" ng-model="reportRequest.startDate" ng-pattern="/^([1-2]\d{3})-([0-1]\d)-([0-3]\d)$/" required>
 			    </div>
 			  </div>
 			  
 			  <div class="form-group">
 			    <label class="control-label col-md-6">End Date</label>
-			    <div class="col-md-6"">
-			    <input type="text"id="endDate" ng-model="reportRequest.endDate">
+			    <div class="col-md-6">
+			    <input type="text" placeholder="yyyy-MM-dd"  name="endDate" ng-model="reportRequest.endDate" ng-pattern="/^([1-2]\d{3})-([0-1]\d)-([0-3]\d)$/" required>
 			    </div>
 			  </div>
 			  
@@ -23,13 +23,13 @@
 			  <!--Multiple IDs can be seperated by comma, for example '100,101,102'-->
 			    <label class="control-label col-md-6">Campaign IDs</label>
 			    <div class="col-md-6">
-			      <input type="text" ng-model="reportRequest.campaignIds">
+			      <input type="text"  placeholder="Seperate by comma ," name="campaignIds" ng-model="reportRequest.campaignIds" ng-pattern="/^\d+($|((\,\d+)+)$)/">
 			    </div>
 			  </div>
 			  <div class="form-group">
 			    <label class="control-label col-md-6">Publisher IDs</label>
-			    <div class="col-md-6"">
-			      <input type="text" ng-model="reportRequest.publisherIds">
+			    <div class="col-md-6">
+			      <input type="text" placeholder="Seperate by comma ,"  name="publisherIds" ng-model="reportRequest.publisherIds" ng-pattern="/^\d+($|((\,\d+)+)$)/">
 			    </div>
 			  </div>
 		  </div>
@@ -39,7 +39,7 @@
 			    <label class="control-label col-md-6">Group By</label>
 			    <div class="col-md-6">
 				   <div class="checkbox">
-				      <label> <input type="checkbox" ng-model="reportRequest.groupBy.adgroup"> Adgroup </label>
+				      <label> <input type="checkbox" name="groupBy" ng-model="reportRequest.groupBy.adgroup" ng-required="validateGroupby()"> Adgroup </label>
 				   </div>
 				   <div class="checkbox">
 				      <label> <input type="checkbox" ng-model="reportRequest.groupBy.app"> App </label>
@@ -52,6 +52,9 @@
 				   </div>
 				   <div class="checkbox">
 				      <label> <input type="checkbox" ng-model="reportRequest.groupBy.creative"> Creative </label>
+				   </div>
+				   <div class="checkbox">
+				      <label> <input type="checkbox" ng-model="reportRequest.groupBy.creativeSize"> Creative Size </label>
 				   </div>
 				   <div class="checkbox">
 				      <label> <input type="checkbox" ng-model="reportRequest.groupBy.day"> Day </label>
@@ -71,12 +74,28 @@
 			    </div>  
 		      </div>
 		  </div>
-		  <div class="col-md-2">
+		  <div class="col-md-5">
 			  <div class="form-group">
-			    <div  class="col-md-offset-6 col-md-6">
+			    <div  class="col-md-offset-1 col-md-11">
 			      <button type="submit" class="btn btn-primary" ng-click="generateReport()">Generate Report</button>
 			    </div>
 			  </div>
+			  <div class="form-group">
+			    <div ng-show="campaignAnalysisForm.submitted" class="col-md-offset-1 col-md-11">
+			      <p class="text-danger" ng-show="campaignAnalysisForm.startDate.$error.required">Start Date is required</p>
+			      <p class="text-danger" ng-show="campaignAnalysisForm.startDate.$error.pattern">Start Date format must be yyyy-MM-dd</p>
+
+			      <p class="text-danger" ng-show="campaignAnalysisForm.endDate.$error.required">End Date is required</p>
+			      <p class="text-danger" ng-show="campaignAnalysisForm.endDate.$error.pattern">End Date format must be yyyy-MM-dd</p>
+
+			      <p class="text-danger" ng-show="campaignAnalysisForm.campaignIds.$error.pattern">Campaign IDs must be numbers seperated by comma</p>
+			      <p class="text-danger" ng-show="campaignAnalysisForm.publisherIds.$error.pattern">Publisher IDs must be numbers seperated by comma</p>
+
+			      
+			      <p class="text-danger" ng-show="campaignAnalysisForm.groupBy.$error.required">One groupBy option is required at least </p>
+			    </div>
+			  </div>
+			  
 		  </div>
 	  </form>
   </div>
@@ -85,30 +104,51 @@
 <script>
 var app = angular.module('campaignApp', []);
 app.controller('campaignCtrl', function($scope,$http) {
-//	$scope.validateRequest() =function() {
-//		var reportRequest = $scope.reportRequest;
-//	}
-	
-    $scope.generateReport = function() {
 
-    $http({
-        url: '/reports/campaignAnalysis',
-        method: 'POST',
-        responseType: 'arraybuffer',
-        data: $scope.reportRequest, //this is your json data string
-        headers: {
-            'Content-type': 'application/json',
-            'Accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+	 $scope.validateGroupby=function() {
+    	var groupBy=null;
+    	if ($scope.reportRequest) {
+    		groupBy = $scope.reportRequest.groupBy;
+    	}
+        if (!groupBy) {
+        	return true; 
         }
-    }).success(function(data){
-        var blob = new Blob([data], {
-            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-        });
-        saveAs(blob, 'campaign_analysis_report' + '.xlsx');
-    }).error(function(){
-        //Some error log
-       alert('Failed to get the report data!')
-    });
+        return  !groupBy.adgroup && !groupBy.app && !groupBy.campaign
+    			&& !groupBy.city && !groupBy.creative && !groupBy.creativeSize && !groupBy.day
+    			&& !groupBy.hour && !groupBy.iabCategory && !groupBy.poi
+    			&& !groupBy.publisher;
+	};
+	
+    $scope.generateReport = function() {    
+    	if (!$scope.campaignAnalysisForm.$valid) {
+            $scope.campaignAnalysisForm.submitted = true;
+    		return;
+    	}
+    	$("#mainDiv").hide();
+    	$("#loadingDiv").show();
+    	
+	    $http({
+	        url: '/reports/campaignAnalysis',
+	        method: 'POST',
+	        responseType: 'arraybuffer',
+	        data: $scope.reportRequest, //this is your json data string
+	        headers: {
+	            'Content-type': 'application/json',
+	            'Accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+	        }
+	    }).success(function(data){
+	    	$("#mainDiv").show();
+	    	$("#loadingDiv").hide();
+	        var blob = new Blob([data], {
+	            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+	        });
+	        saveAs(blob, 'campaign_analysis_report' + '.xlsx');
+	    }).error(function(){
+	      	$("#mainDiv").show();
+	    	$("#loadingDiv").hide();
+	        //Some error log
+	       alert('Failed to get the report data!')
+	    });
 
 
     };

@@ -26,6 +26,7 @@ momoService.prototype.getReport=function(startDate, endDate, type, callback) {
   request(options, function(error, response, body) {
        if (!error && response.statusCode == 200) {
          if(body.ec==200) { // succesful response.
+        	 console.log('Momo response:' + JSON.stringify(body));
            for(var i=0;i<body.data.length;i++) {
               var date = body.data[i].time;
               var cost = body.data[i].fee;

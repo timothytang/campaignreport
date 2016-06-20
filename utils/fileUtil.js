@@ -23,7 +23,7 @@ fileUtil.prototype.sendAsXlsxFile=function (response, data, fileName) {
             }
             var value = oneLine[index2];
             if (value == null) {
-                value = "NA";
+                value = "NULL";
             }
             row.push(value);
         }

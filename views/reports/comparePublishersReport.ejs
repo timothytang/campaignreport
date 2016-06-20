@@ -1,19 +1,19 @@
 <% include ./../header.ejs %>
-<div ng-app="campaignAnalysisApp" class="row-fluid" ng-controller="formCtrl">
+<div id="mainDiv" ng-app="campaignAnalysisApp" class="row-fluid" ng-controller="formCtrl">
   <div class="span12">
 	  <form class="form-horizontal" role="form">
 	  <legend>Comparing <small>xAd data and publisher data.</small></legend>
 	  <div class="form-group">
 	    <label class="control-label col-sm-2">Start Date</label>
 	    <div class="col-sm-10">
-	    <input type="text" id="startDate" ng-model="reportRequest.startDate">
+	    <input type="text" id="startDate" ng-model="reportRequest.startDate" required>
 	    </div>
 	  </div>
 	  
 	  <div class="form-group">
 	    <label class="control-label col-sm-2">End Date</label>
 	    <div class="col-sm-10"">
-	    <input type="text"id="endDate" ng-model="reportRequest.endDate">
+	    <input type="text"id="endDate" ng-model="reportRequest.endDate" required>
 	    </div>
 	  </div>
 	  
@@ -30,25 +30,30 @@
 var app = angular.module('campaignAnalysisApp', []);
 app.controller('formCtrl', function($scope,$http) {
     $scope.generateReport = function() {
-
-    $http({
-        url: '/reports/comparePublishers',
-        method: 'POST',
-        responseType: 'arraybuffer',
-        data: $scope.reportRequest, //this is your json data string
-        headers: {
-            'Content-type': 'application/json',
-            'Accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-        }
-    }).success(function(data){
-        var blob = new Blob([data], {
-            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-        });
-        saveAs(blob, 'monetization_report' + '.xlsx');
-    }).error(function(){
-        //Some error log
-       alert('Failed to get the report data!')
-    });
+    	$("#mainDiv").hide();
+    	$("#loadingDiv").show();
+	    $http({
+	        url: '/reports/comparePublishers',
+	        method: 'POST',
+	        responseType: 'arraybuffer',
+	        data: $scope.reportRequest, //this is your json data string
+	        headers: {
+	            'Content-type': 'application/json',
+	            'Accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+	        }
+	    }).success(function(data){
+	    	$("#mainDiv").show();
+	    	$("#loadingDiv").hide();
+	        var blob = new Blob([data], {
+	            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+	        });
+	        saveAs(blob, 'monetization_report' + '.xlsx');
+	    }).error(function(){
+	    	$("#mainDiv").show();
+	    	$("#loadingDiv").hide();
+	        //Some error log
+	       alert('Failed to get the report data!')
+	    });
 
 
     };

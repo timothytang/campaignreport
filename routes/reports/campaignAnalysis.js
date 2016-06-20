@@ -26,16 +26,28 @@ router.post('/', function (req, res) {
 
 
 function createCampaignQuery(reportRequest) {
+	console.log(JSON.stringify(reportRequest));
     var startDate = reportRequest.startDate;
     var endDate = reportRequest.endDate;
     var campaignIds = reportRequest.campaignIds;
     var publisherIds = reportRequest.publisherIds;
     
     // TODO: to add input validation.
-    if (!(startDate&&endDate) && !campaignIds) {
+    // Dates are required to limit the data.
+    if (!startDate || !endDate) {
     	console.error('Date range or campaignIds are required at least!');
     	return '';
     }
+    
+    var groupBy = reportRequest.groupBy;
+    var entryTable = '';
+    if (groupBy.hour) {
+    	entryTable = ' from Campaign_hourly_summary cs ';
+    	endDate = endDate + ' 23:00:00'; // including hours in the day if it is by hour report.
+    } else {
+    	entryTable = ' from Campaign_daily_summary cs ';
+    }
+        
     
     var whereCause = ' where ';
     if (startDate) {
@@ -51,15 +63,7 @@ function createCampaignQuery(reportRequest) {
     	whereCause = whereCause + ' cs.publisher_id in ('+publisherIds+') and ';
     }
     whereCause = whereCause.slice(0, whereCause.length - 4);
-    
-    var groupBy = reportRequest.groupBy;
-    var entryTable = '';
-    if (groupBy.hour) {
-    	entryTable = ' from Campaign_hourly_summary cs ';
-    } else {
-    	entryTable = ' from Campaign_daily_summary cs ';
-    }
-        
+
     var selectCause = 'select ';
     var groupByCause = '';
     var joinCause = '';
@@ -75,6 +79,11 @@ function createCampaignQuery(reportRequest) {
     	selectCause= selectCause + 'creative.creative_id,creative.creative_name,';
 
         joinCause =	joinCause + ' inner join creative_dimension creative on cs.creative_id =creative.creative_id ';
+    }
+    
+    if (groupBy.creativeSize) {
+    	groupByCause = groupByCause + ' cs.banner_size,';
+    	selectCause= selectCause + '  cs.banner_size,';
     }
     
     if (groupBy.adgroup) {
