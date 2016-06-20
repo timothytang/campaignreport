@@ -3,7 +3,7 @@
  */
 var redshiftDao = require('./../service/dao/commonRedshiftDao.js');
 
-var monetizationService = function() {
+var comparePublishersService = function() {
 };
 
 // TODO: to refine the SQL.
@@ -24,7 +24,7 @@ var sumpublisherCostSQLTemplate =
 		+ " union all "
 		+ "select timestamp as date, \'Sohu\' as publisher, sum(pub_gross_revenue) as xad_cost, sum(ad_impression) as xad_impression,sum(click) as xad_click from campaign_daily_summary cp  where cp.publisher_id in (551) and timestamp>=\'__startDate__ 00:00:00\' and timestamp<=\'__endDate__ 00:00:00\' group by timestamp;"
 
-monetizationService.prototype.getXadMonetizationReport = function(startDate,
+comparePublishersService.prototype.getXadMonetizationReport = function(startDate,
 		endDate, callback) {
 	var sumpublisherCostSQL = sumpublisherCostSQLTemplate.replace(/__startDate__/g, startDate.stdFormat()).replace(/__endDate__/g, endDate.stdFormat());
 	redshiftDao.query(sumpublisherCostSQL, function(err, result) {
@@ -42,4 +42,4 @@ monetizationService.prototype.getXadMonetizationReport = function(startDate,
 
 }
 
-module.exports = new monetizationService();
+module.exports = new comparePublishersService();

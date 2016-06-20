@@ -23,13 +23,13 @@
 			  <!--Multiple IDs can be seperated by comma, for example '100,101,102'-->
 			    <label class="control-label col-md-6">Campaign IDs</label>
 			    <div class="col-md-6">
-			      <input type="text"  placeholder="Seperate by comma ," name="campaignIds" ng-model="reportRequest.campaignIds" ng-pattern="/^\d+($|((\,\d+)+)$)/">
+			      <input type="text"  placeholder="Seperate IDs by ," name="campaignIds" ng-model="reportRequest.campaignIds" ng-pattern="/^\d+($|((\,\d+)+)$)/">
 			    </div>
 			  </div>
 			  <div class="form-group">
 			    <label class="control-label col-md-6">Publisher IDs</label>
 			    <div class="col-md-6">
-			      <input type="text" placeholder="Seperate by comma ,"  name="publisherIds" ng-model="reportRequest.publisherIds" ng-pattern="/^\d+($|((\,\d+)+)$)/">
+			      <input type="text" placeholder="Seperate IDs by ,"  name="publisherIds" ng-model="reportRequest.publisherIds" ng-pattern="/^\d+($|((\,\d+)+)$)/">
 			    </div>
 			  </div>
 		  </div>
@@ -63,7 +63,7 @@
 				      <label> <input type="checkbox" ng-model="reportRequest.groupBy.hour"> Hour </label>
 				   </div>
 				   <div class="checkbox">
-				      <label> <input type="checkbox" ng-model="reportRequest.groupBy.iabCategory"> IABCategory </label>
+				      <label> <input type="checkbox" ng-model="reportRequest.groupBy.iabCategory"> IAB Category </label>
 				   </div>
 				   <div class="checkbox">
 				      <label> <input type="checkbox" ng-model="reportRequest.groupBy.poi"> POI </label>
