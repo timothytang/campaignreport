@@ -9,8 +9,9 @@ var fileUtil = require('./../../utils/fileUtil.js');
 var express = require('express');
 var router = express.Router();
 var async=require('async');
+
 router.get('/',function(req,res){
-	res.render('reports/comparePublishersReport', { title: 'Comparison Report' });
+	res.render('reports/comparePublishersReport', { title: 'Publishers Comparison' });
 });
 		
 router.post('/', function (req, res) {

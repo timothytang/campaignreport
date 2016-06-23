@@ -77,21 +77,21 @@
  app_site_id              	 character varying(128)      	);
 
  insert into Campaign_daily_summary(campaign_id,publisher_id,xad_gross_revenue, pub_gross_revenue,ad_impression,click,timestamp, creative_id, adgroup_id,mslocation_id, traffic_src) 
-                             values(10000000001,541,50.1, 200.01,10000001,1001,'2016-05-30 00:00:00', 101,201,301, ':weibo');
+                             values(10000000001,541,50.1, 200.01,10000001,1001,'2016-06-13 00:00:00', 101,1848,301, ':weibo');
  insert into Campaign_daily_summary(campaign_id,publisher_id,xad_gross_revenue, pub_gross_revenue,ad_impression,click,timestamp, creative_id, adgroup_id,mslocation_id, traffic_src)  
-                             values(10000000002,546,50.2, 200.02,10000002,1002,'2016-05-30 00:00:00', 102,202,302, ':wexin') ;  
+                             values(10000000002,546,50.2, 200.02,10000002,1002,'2016-06-13 00:00:00', 102,202,302, ':wexin') ;  
  insert into Campaign_daily_summary(campaign_id,publisher_id,xad_gross_revenue, pub_gross_revenue,ad_impression,click,timestamp, creative_id, adgroup_id,mslocation_id, traffic_src)  
-                             values(10000000003,536,50.3, 200.03,10000003,1003,'2016-05-30 00:00:00', 103,203,303,':qq') ;    
+                             values(10000000003,536,50.3, 200.03,10000003,1003,'2016-06-13 00:00:00', 103,203,303,':qq') ;    
  insert into Campaign_daily_summary(campaign_id,publisher_id,xad_gross_revenue, pub_gross_revenue,ad_impression,click,timestamp, creative_id, adgroup_id,mslocation_id, traffic_src)  
-                             values(10000000004,544,50.4,200.04,10000004,1004,'2016-05-30 00:00:00', 104,204,304,':com.reader') ;     
+                             values(10000000004,544,50.4,200.04,10000004,1004,'2016-06-13 00:00:00', 104,204,304,':com.reader') ;     
  insert into Campaign_daily_summary(campaign_id,publisher_id,xad_gross_revenue, pub_gross_revenue,ad_impression,click,timestamp, creative_id, adgroup_id,mslocation_id, traffic_src)  
-                             values(10000000005,543,50.5, 200.05,10000005,1005,'2016-05-30 00:00:00', 105,205,305,':com.test') ;  
+                             values(10000000005,543,50.5, 200.05,10000005,1005,'2016-06-13 00:00:00', 1849,1849,305,':com.test') ;  
  insert into Campaign_daily_summary(campaign_id,publisher_id,xad_gross_revenue, pub_gross_revenue,ad_impression,click,timestamp, creative_id, adgroup_id,mslocation_id, traffic_src)  
-                             values(10000000006,549,50.6, 200.06,10000006,1006,'2016-05-30 00:00:00', 106,206,306, ':com.abc') ;
+                             values(10000000006,549,50.6, 200.06,10000006,1006,'2016-06-13 00:00:00', 106,206,306, ':com.abc') ;
  insert into Campaign_daily_summary(campaign_id,publisher_id,xad_gross_revenue, pub_gross_revenue,ad_impression,click,timestamp, creative_id, adgroup_id,mslocation_id, traffic_src)  
-                             values(10000000007,548,50.7,200.07,10000007,1007,'2016-05-30 00:00:00', 107,207,307,':com.reader') ; 
+                             values(10000000007,548,50.7,200.07,10000007,1007,'2016-06-14 00:00:00', 107,207,307,':com.reader') ; 
  insert into Campaign_daily_summary(campaign_id,publisher_id,xad_gross_revenue, pub_gross_revenue,ad_impression,click,timestamp, creative_id, adgroup_id,mslocation_id, traffic_src)  
-                             values(10000000008,551,50.8,200.08,10000008,1008,'2016-05-30 00:00:00', 108,208,308,':com.reader') ;  
+                             values(10000000008,551,50.8,200.08,10000008,1008,'2016-06-15 00:00:00', 108,1850,308,':com.reader') ;  
 
 
 create table campaign_dimension
@@ -137,14 +137,14 @@ create table adgroup_dimension
  adv_bid_type   	 character varying(25)  	,
  adv_bid_rate   	 numeric(14,6)          	)
 
-insert into adgroup_dimension (campaign_id, adgroup_id, adgroup_name) values(10000000001,201,'group 1' );
+insert into adgroup_dimension (campaign_id, adgroup_id, adgroup_name) values(10000000001,1848,'group 1' );
 insert into adgroup_dimension (campaign_id, adgroup_id, adgroup_name) values(10000000002,202,'group 2' );
 insert into adgroup_dimension (campaign_id, adgroup_id, adgroup_name) values(10000000003,203,'group 3' );
 insert into adgroup_dimension (campaign_id, adgroup_id, adgroup_name) values(10000000004,204,'group 4' );
-insert into adgroup_dimension (campaign_id, adgroup_id, adgroup_name) values(10000000005,205,'group 5' );
+insert into adgroup_dimension (campaign_id, adgroup_id, adgroup_name) values(10000000005,1849,'group 5' );
 insert into adgroup_dimension (campaign_id, adgroup_id, adgroup_name) values(10000000006,206,'group 6' );
 insert into adgroup_dimension (campaign_id, adgroup_id, adgroup_name) values(10000000007,207,'group 7' );
-insert into adgroup_dimension (campaign_id, adgroup_id, adgroup_name) values(10000000008,208,'group 8' );
+insert into adgroup_dimension (campaign_id, adgroup_id, adgroup_name) values(10000000008,1850,'group 8' );
 
 
 create table creative_dimension

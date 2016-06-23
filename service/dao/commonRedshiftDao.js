@@ -2,6 +2,14 @@
  * http://usejsdoc.org/
  */
 var pg = require('pg');
+var types = require('pg').types
+types.setTypeParser(20, function(val) {
+  return Number(val)
+})
+types.setTypeParser(1700, function(val) {
+  return Number(val)
+})
+
 var config=require('./../../config.js');
 
 var redshiftDao=function(){};
@@ -26,6 +34,7 @@ redshiftDao.prototype.query=function(query, callback) {
 				return callback(err, null);
 		    } else {
 		    	console.log('Runing query succeeded.');
+
 		    	return callback(null, result.rows);
 		    }
 		  }

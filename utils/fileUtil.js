@@ -10,6 +10,11 @@ var fileUtil=function(){};
  */
 fileUtil.prototype.sendAsXlsxFile=function (response, data, fileName) {
     var xlsxData = [];
+//    if (!data || data.length==0) {
+//    	res.statusCode=404;
+//    	res.send("No result found");
+//    	return;
+//    }
     for (var index in data) {
         var oneLine = data[index];
         var row = [];
@@ -17,11 +22,11 @@ fileUtil.prototype.sendAsXlsxFile=function (response, data, fileName) {
         if (index == 0) {
             headers = [];
         }
-        for (var index2 in oneLine) {
+        for (var key in oneLine) {
             if (index == 0) {
-                headers.push(index2);
+                headers.push(key);
             }
-            var value = oneLine[index2];
+            var value = oneLine[key];
             if (value == null) {
                 value = "NULL";
             }
@@ -36,6 +41,9 @@ fileUtil.prototype.sendAsXlsxFile=function (response, data, fileName) {
     response.writeHead(200, {
         'Content-Type': 'document/xlsx'
 //        	,
+        	// by using angular framework in the web page, files cannot be downloaded by following setup,the file
+        	// download now is handled by javascript in the web page.
+        	
 //        'Content-Disposition': 'attachment;filename='+fileName + '.xlsx'
     });    
     var obj =[{name: "data", data: xlsxData}]

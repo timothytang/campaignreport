@@ -5,10 +5,11 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var routes = require('./routes/index');
+var portal = require('./routes/portal');
 var users = require('./routes/users');
 var comparisonPublisers = require('./routes/reports/comparePublishers.js');
 var compaignAnalysis = require('./routes/reports/campaignAnalysis.js');
+var campaignDaily = require('./routes/reports/campaignDaily.js');
 
 var utils = require('./utils/utils');
 
@@ -26,12 +27,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
-app.use('/users', users);
+app.use('/portal', portal);
+app.use('/', portal);// TODO: to change to default index page.
 app.use('/reports/comparePublishers', comparisonPublisers);
 app.use('/reports/campaignAnalysis', compaignAnalysis);
+app.use('/reports/campaignDaily', campaignDaily);
 
-
+//我们的redshift是UTC时区，如果不设成一致的话 PG模块会有时区偏差。
+process.env.TZ = 'UTC'
 // app.get('/users/list',users.list);
 app.listen(8080);
 

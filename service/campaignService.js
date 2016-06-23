@@ -18,7 +18,6 @@ var campaignService = function() {
  * @param callback
  */
 campaignService.prototype.getCampaigns = function(campaignRequest, callback) {
-	console.log(JSON.stringify(campaignRequest));
 	var validationError = [];
 	var campaignQuery = createCampaignQuery(campaignRequest);
 	if (validationError.size > 0) {
@@ -93,11 +92,28 @@ function createCampaignQuery(reportRequest, validationError) {
 	var groupByCause = '';
 	var joinCause = '';
 	// At least one groupBy must be selected.
+	if (groupBy.hour) {
+        selectCause = selectCause + "substring(cast (timestamp as character(19)),1, 11) as campaign_date, substring(cast (timestamp as character(19)),11) as campaign_time,"
+		groupByCause = groupByCause + ' campaign_date,campaign_time,';
+	} else if (groupBy.day) {
+		selectCause = selectCause + 'timestamp as campaign_date,';
+		groupByCause = groupByCause + ' campaign_date,';
+	}
+	
+	
 	if (groupBy.campaign) {
 		groupByCause = groupByCause + 'camp.campaign_id,camp.campaign_name,';
 		selectCause = selectCause + 'camp.campaign_id,camp.campaign_name,';
 		joinCause = joinCause
 				+ ' inner join campaign_dimension camp on cs.campaign_id=camp.campaign_id ';
+	}
+	
+	if (groupBy.adgroup) {
+		selectCause = selectCause + 'ad.adgroup_id, ad.adgroup_name,';
+		groupByCause = groupByCause + 'ad.adgroup_id, ad.adgroup_name,';
+
+		joinCause = joinCause
+				+ ' inner join adgroup_dimension ad on cs.adgroup_id=ad.adgroup_id ';
 	}
 
 	if (groupBy.creative) {
@@ -113,20 +129,6 @@ function createCampaignQuery(reportRequest, validationError) {
 	if (groupBy.creativeSize) {
 		groupByCause = groupByCause + ' cs.banner_size,';
 		selectCause = selectCause + '  cs.banner_size,';
-	}
-
-	if (groupBy.adgroup) {
-		selectCause = selectCause + 'ad.adgroup_id, ad.adgroup_name,';
-		groupByCause = groupByCause + 'ad.adgroup_id, ad.adgroup_name,';
-
-		joinCause = joinCause
-				+ ' inner join adgroup_dimension ad on cs.adgroup_id=ad.adgroup_id ';
-	}
-
-	if (groupBy.hour || groupBy.day) {
-		selectCause = selectCause + 'timestamp as campaign_time,';
-		groupByCause = groupByCause + 'campaign_time,';
-
 	}
 
 	if (groupBy.city || groupBy.poi) {
@@ -165,7 +167,7 @@ function createCampaignQuery(reportRequest, validationError) {
 	}
 
 	selectCause = selectCause
-			+ ' sum(xad_gross_revenue) as xad_revenue, sum(ad_impression) as impression, sum(click) as click,sum(pub_gross_revenue) as publisher_revenue '
+			+ ' sum(ad_impression) as impression, sum(click) as click,sum(pub_gross_revenue) as publisher_revenue, sum(xad_gross_revenue) as xad_revenue '
 	groupByCause = groupByCause.slice(0, groupByCause.length - 1);
 	var orderCause = ' order by ' + groupByCause + ';';
 	groupByCause = ' group by ' + groupByCause;

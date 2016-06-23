@@ -1,0 +1,109 @@
+<% include ./../header.ejs %>
+<div id="mainDiv" class="row-fluid">
+  
+  <div class="span12">
+	  <form name="campaignDailyForm" ng-app="campaignApp" ng-controller="campaignCtrl" class="form-horizontal" role="form" novalidate>
+		  <legend>Campaign Daily Report</legend>
+		  
+		  <div class="col-md-4 ">
+			  <div class="form-group">
+			    <label class="control-label col-md-6">Start Date</label>
+			    <div class="col-md-6">
+			        <input type="text" placeholder="yyyy-MM-dd" name="startDate" ng-model="reportRequest.startDate" ng-pattern="/^([1-2]\d{3})-([0-1]\d)-([0-3]\d)$/" required>
+			    </div>
+			  </div>
+			  
+			  <div class="form-group">
+			    <label class="control-label col-md-6">End Date</label>
+			    <div class="col-md-6">
+			    <input type="text" placeholder="yyyy-MM-dd"  name="endDate" ng-model="reportRequest.endDate" ng-pattern="/^([1-2]\d{3})-([0-1]\d)-([0-3]\d)$/" required>
+			    </div>
+			  </div>
+			  
+			  
+			  <div class="form-group">
+			  <!--Multiple IDs can be seperated by comma, for example '100,101,102'-->
+			    <label class="control-label col-md-6">Campaign IDs</label>
+			    <div class="col-md-6">
+			      <input type="text"  placeholder="Seperate IDs by ," name="campaignIds" ng-model="reportRequest.campaignIds" ng-pattern="/^\d+($|((\,\d+)+)$)/">
+			    </div>
+			  </div>
+		  </div>
+		  
+	     
+		  <div class="col-md-3">
+			  <div class="form-group">
+			    <label class="control-label col-md-6">Publisher Cost Diff</label>
+			    <div class="col-md-6">
+			    <input type="text" placeholder=""  name="publisherCostDiff" ng-model="reportRequest.publisherCostDiff" ng-pattern="/^\d+($|.\d+$)/">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <div  class="col-md-offset-2 col-md-6">
+			      <button type="submit" class="btn btn-primary" ng-click="generateReport()">Download Report</button>
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <div ng-show="campaignDailyForm.submitted" class="col-md-offset-2 col-md-10">
+			      <p class="text-danger" ng-show="campaignDailyForm.startDate.$error.required">Start Date is required</p>
+			      <p class="text-danger" ng-show="campaignDailyForm.startDate.$error.pattern">Start Date format must be yyyy-MM-dd</p>
+
+			      <p class="text-danger" ng-show="campaignDailyForm.endDate.$error.required">End Date is required</p>
+			      <p class="text-danger" ng-show="campaignDailyForm.endDate.$error.pattern">End Date format must be yyyy-MM-dd</p>
+
+			      <p class="text-danger" ng-show="campaignDailyForm.campaignIds.$error.pattern">Campaign IDs must be numbers seperated by comma</p>
+			      <p class="text-danger" ng-show="campaignDailyForm.publisherCostDiff.$invalid">Publisher Cost Diff must be digits</p>
+
+			    </div>
+			  </div>
+			  
+		  </div>
+		  <input type='hidden' id="defaultDate" value='<%=defaultDate%>'>
+	  </form>
+  </div>
+</div>
+
+<script>
+var app = angular.module('campaignApp', []);
+app.controller('campaignCtrl', function($scope,$http) {
+	var defaultDate=$("#defaultDate").val();
+	$scope.reportRequest={'startDate':defaultDate, 'endDate':defaultDate};
+
+    $scope.generateReport = function() {    
+    	if (!$scope.campaignDailyForm.$valid) {
+            $scope.campaignDailyForm.submitted = true;
+    		return;
+    	}
+    	$("#mainDiv").hide();
+    	$("#loadingDiv").show();
+    	
+	    $http({
+	        url: '/reports/campaignDaily',
+	        method: 'POST',
+	        responseType: 'arraybuffer',
+	        data: $scope.reportRequest, //this is your json data string
+	        headers: {
+	            'Content-type': 'application/json',
+	            'Accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+	        }
+	    }).success(function(data){
+	    	$("#mainDiv").show();
+	    	$("#loadingDiv").hide();
+	        var blob = new Blob([data], {
+	            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+	        });
+	        saveAs(blob, 'campaign_daily_report' + '.xlsx');
+	    }).error(function(){
+	      	$("#mainDiv").show();
+	    	$("#loadingDiv").hide();
+	        //Some error log
+	       alert('Failed to get the report data!')
+	    });
+
+
+    };
+});
+</script>
+
+
+<% include ./../footer.ejs %>

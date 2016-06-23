@@ -5,7 +5,7 @@ var express = require('express');
 var router = express.Router();
 
 router.get('/',function(req,res){
-	res.render('reports/campaignAnalysisReport', { title: 'Campaign Analysis' });
+	res.render('reports/campaignAnalysisReport', { title: 'Campaign Daily' });
 });
 		
 router.post('/', function (req, res) {

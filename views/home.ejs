@@ -1,0 +1,36 @@
+<% include ./header.ejs %>
+<legend>Campaign Setup</legend>
+
+<div class="">
+    <a href="http://ec2-54-223-151-163.cn-north-1.compute.amazonaws.com.cn:9999/static/#/" class="btn btn-default btn-lg">
+	  <span class="glyphicon glyphicon-edit"></span> API UI
+	</a>
+ 
+     <a href="http://ec2-54-223-148-247.cn-north-1.compute.amazonaws.com.cn:8081/#/" class="btn btn-default btn-lg">
+	  <span class="glyphicon glyphicon-map-marker"></span> POI
+	 </a>
+</div>
+<br/>
+<legend>Campaign report</legend>
+<div class="">
+   <a href="/reports/campaignAnalysis" class="btn btn-default btn-lg">
+	  <span class="glyphicon glyphicon-euro"></span> Campaign Analysis
+   </a>
+   <a href="/reports/campaignDaily" class="btn btn-default btn-lg">
+      <span class="glyphicon glyphicon-calendar"></span> Campaign Daily
+   </a>
+</div>
+
+<br/>
+<legend>Publisher report</legend>
+<div class="">
+   <a href="/reports/comparePublishers" class="btn btn-default btn-lg">
+	  <span class="glyphicon glyphicon-adjust"></span> Campare Publishers
+   </a>
+   <a href="#" class="btn btn-default btn-lg">
+      <span class="glyphicon glyphicon-question-sign"></span> Avails Estimation
+   </a>
+</div>
+
+
+<% include ./footer.ejs %>
