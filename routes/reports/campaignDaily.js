@@ -1,4 +1,5 @@
 var fileUtil = require('./../../utils/fileUtil.js');
+var utils = require('./utils/utils');
 var campaignService = require('./../../service/campaignService.js');
 var request= require('request');
 var cheerio = require('cheerio');
@@ -84,6 +85,7 @@ function sendActualResult(res, result, publisherCostDiff) {
 		            if (err) {
 		              console.error('Error: failed to get actual click from redis.');
 		            }
+		            console.log('Actual click is retrieved for daily report');
 		            fileUtil.sendAsXlsxFile(res,actualResult, null);
 		          }
 		        );		
