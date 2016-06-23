@@ -37,25 +37,23 @@ router.post('/', function (req, res) {
  * 
  * @param result, format is campaign_date	campaign_id	campaign_name	adgroup_id	adgroup_name	impression	click	publisher_revenue	xad_revenue
  */
-function sendActualResult(res, result, publisherCostDiff) {
-	var actualResult = [];
-	if (result && result.length>0) {
-		var index = 0;
-		async.whilst(
-		          function () { return index<result.length},
-		          function (callback) {
-		        	  var currentResult = result[index];
+function sendActualResult(res, xadResult, publisherCostDiff) {
+	var actualImlAndClick = {};
+	var i = 0;
+	if (xadResult && xadResult.length>0) {
+		async.each(xadResult,
+		          function (currentResult, callback) {
 		        	  var date = currentResult.campaign_date.stdFormat();
 		        	  var adgroupId = currentResult.adgroup_id;
 		        	  var targetURL = config.redisActualClickURL+adgroupId+"/"+date+"/"+date+"/0";
 		              request.get({url:targetURL}, 
 		                   function(err,httpResponse,body){
-		            	        var adgroupResult = null;
 		                        if (err) {
 		                          console.error('Error: failed to get actual click from redis:' + err);
 		                          console.error('target URL: ' + targetURL);
-		                          adgroupResult=buildActualResult(currentResult, null, null, publisherCostDiff);
+		                          actualImlAndClick[adgroupId+date]={actImp:null, actClick:null};
 		                        } else {
+		                          console.log("Get actual succeeded： " + targetURL)
 		                          $ = cheerio.load(body);
 		                          var tds = $('tr').eq(0).find('td');
 		                          var actualImp = tds.eq(3).text();
@@ -71,21 +69,30 @@ function sendActualResult(res, result, publisherCostDiff) {
 		                        	  actualClick=Number(actualClick);
 		                          }
 		                          
-		                          adgroupResult=buildActualResult(currentResult, actualImp, actualClick, publisherCostDiff);
+//		                          adgroupResult=buildActualResult(currentResult, actualImp, actualClick, publisherCostDiff);
+		                          actualImlAndClick[adgroupId+date]={actImp:actualImp, actClick:actualClick};
 		                        }
 		                        
-		                        actualResult.push(adgroupResult);
 		                        callback(null, 1);
 		                        
 		              });
-
-		              index++;
+		              console.log("index is: " + i);
+		              i++;
 		          },
 		          function (err, result) {
 		            if (err) {
 		              console.error('Error: failed to get actual click from redis.');
+		              // not return, still handling the partial processed result.
 		            }
 		            console.log('Actual click is retrieved for daily report');
+		        	var actualResult = [];
+		            for (var index in xadResult) {
+		            	var imlAndClick = actualImlAndClick[xadResult[index].adgroup_id + xadResult[index].campaign_date.stdFormat()];
+		            	var adgroupResult=buildActualResult(xadResult[index], imlAndClick.actImp, imlAndClick.actClick, publisherCostDiff);
+		            	console.log(adgroupResult);
+		            	actualResult.push(adgroupResult);
+		            }
+		            console.log("final: " + actualResult)
 		            fileUtil.sendAsXlsxFile(res,actualResult, null);
 		          }
 		        );		
