@@ -99,18 +99,18 @@ function buildActualResult(originalResult,actualImp, actualClick, publisherCostD
 	var redshiftClick = Number(originalResult.click);
 	var xadCost = Number(originalResult.publisher_revenue);
 	var revenueCPC = null;
-	if (redshiftClick>0) {
-		revenueCPC=Number((xadRevenue/redshiftClick).toFixed(2));
+	if (redshiftClick>0 && xadRevenue>0) {
+		revenueCPC=Number(to2Fixed((xadRevenue/redshiftClick)));
 	}
 	
 	var actualRevenue = null;
 	if (actualClick && revenueCPC) {
-		actualRevenue=Number((revenueCPC*actualClick).toFixed(2));
+		actualRevenue=Number(to2Fixed((revenueCPC*actualClick)));
 	} 
 	
 	var actualCost = null;
-	if (publisherCostDiff) {
-		actualCost=Number((xadCost*publisherCostDiff).toFixed(2));
+	if (publisherCostDiff && xadCost) {
+		actualCost=Number(to2Fixed((xadCost*publisherCostDiff)));
 	}
 	
 	var actualMargin = null;
@@ -119,20 +119,28 @@ function buildActualResult(originalResult,actualImp, actualClick, publisherCostD
 	}
 	
 	var costCPC = null;
-	if (actualCost && actualClick) {
-		costCPC = Number((actualCost/actualClick).toFixed(2));
+	if (actualCost && actualCost>0 && actualClick && actualClick>0) {
+		costCPC = Number(to2Fixed((actualCost/actualClick)));
 	}
 	
 	
 	var adgroupResult={'Date':originalResult.campaign_date, 'CampaignID':originalResult.campaign_id,
 			'CampaignName':originalResult.campaign_name,'AdgroupID':originalResult.adgroup_id,
 			'Adgroup Name':originalResult.adgroup_name,'Redshift Imp':originalResult.impression,
-			'Redshift Click':originalResult.click,'Xad Revenue':Number(originalResult.xad_revenue.toFixed(2)),
-			'Xad Cost':Number(originalResult.publisher_revenue.toFixed(2)), "Revenue CPC":Number(revenueCPC.toFixed(2)),
+			'Redshift Click':originalResult.click,'Xad Revenue':Number(to2Fixed(originalResult.xad_revenue)),
+			'Xad Cost':Number(to2Fixed(originalResult.publisher_revenue)), "Revenue CPC":Number(to2Fixed(revenueCPC)),
 			'Act Imp': actualImp, 'Act Click': actualClick, 'Act Cost': actualCost, 'Act Rev': actualRevenue,
 			'Act Margin': actualMargin, 'Cost CPC': costCPC
 			};
 	return adgroupResult;
+}
+
+function to2Fixed(number) {
+	if (number) {
+		return number.toFixed(2);
+	} else {
+		return number;
+	}
 }
 
 module.exports = router;
