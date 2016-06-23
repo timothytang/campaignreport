@@ -35,7 +35,7 @@ router.post('/', function (req, res) {
  * The actual click result in redshift is not accurate, we have a tracking system which tracks the actual click in Redis，
  * here we will get final result based on actual click.
  * 
- * @param result, format is campaign_time	campaign_id	campaign_name	adgroup_id	adgroup_name	impression	click	publisher_revenue	xad_revenue
+ * @param result, format is campaign_date	campaign_id	campaign_name	adgroup_id	adgroup_name	impression	click	publisher_revenue	xad_revenue
  */
 function sendActualResult(res, result, publisherCostDiff) {
 	var actualResult = [];
@@ -45,7 +45,7 @@ function sendActualResult(res, result, publisherCostDiff) {
 		          function () { return index<result.length},
 		          function (callback) {
 		        	  var currentResult = result[index];
-		        	  var date = currentResult.campaign_time.stdFormat();
+		        	  var date = currentResult.campaign_date.stdFormat();
 		        	  var adgroupId = currentResult.adgroup_id;
 		        	  var targetURL = config.redisActualClickURL+adgroupId+"/"+date+"/"+date+"/0";
 		              request.get({url:targetURL}, 
@@ -124,7 +124,7 @@ function buildActualResult(originalResult,actualImp, actualClick, publisherCostD
 	}
 	
 	
-	var adgroupResult={'Date':originalResult.campaign_time, 'CampaignID':originalResult.campaign_id,
+	var adgroupResult={'Date':originalResult.campaign_date, 'CampaignID':originalResult.campaign_id,
 			'CampaignName':originalResult.campaign_name,'AdgroupID':originalResult.adgroup_id,
 			'Adgroup Name':originalResult.adgroup_name,'Redshift Imp':originalResult.impression,
 			'Redshift Click':originalResult.click,'Xad Revenue':originalResult.xad_revenue,
