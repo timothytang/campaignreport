@@ -105,17 +105,17 @@ function buildActualResult(originalResult,actualImp, actualClick, publisherCostD
 	
 	var actualRevenue = null;
 	if (actualClick && revenueCPC) {
-		actualRevenue=revenueCPC*actualClick;
+		actualRevenue=Number((revenueCPC*actualClick).toFixed(2));
 	} 
 	
 	var actualCost = null;
 	if (publisherCostDiff) {
-		actualCost=Number(xadCost)*publisherCostDiff;
+		actualCost=Number((xadCost*publisherCostDiff).toFixed(2));
 	}
 	
 	var actualMargin = null;
 	if (actualRevenue && actualCost && actualRevenue>0) {
-		actualMargin=(actualRevenue-actualCost)/actualRevenue;
+		actualMargin=Number(((actualRevenue-actualCost)/actualRevenue).toFixed(4));
 	}
 	
 	var costCPC = null;
@@ -127,8 +127,8 @@ function buildActualResult(originalResult,actualImp, actualClick, publisherCostD
 	var adgroupResult={'Date':originalResult.campaign_date, 'CampaignID':originalResult.campaign_id,
 			'CampaignName':originalResult.campaign_name,'AdgroupID':originalResult.adgroup_id,
 			'Adgroup Name':originalResult.adgroup_name,'Redshift Imp':originalResult.impression,
-			'Redshift Click':originalResult.click,'Xad Revenue':originalResult.xad_revenue,
-			'Xad Cost':originalResult.publisher_revenue, "Revenue CPC":revenueCPC,
+			'Redshift Click':originalResult.click,'Xad Revenue':Number(originalResult.xad_revenue.toFixed(2)),
+			'Xad Cost':Number(originalResult.publisher_revenue.toFixed(2)), "Revenue CPC":Number(revenueCPC.toFixed(2)),
 			'Act Imp': actualImp, 'Act Click': actualClick, 'Act Cost': actualCost, 'Act Rev': actualRevenue,
 			'Act Margin': actualMargin, 'Cost CPC': costCPC
 			};
