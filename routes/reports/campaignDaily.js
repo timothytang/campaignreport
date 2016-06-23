@@ -1,5 +1,5 @@
 var fileUtil = require('./../../utils/fileUtil.js');
-var utils = require('./utils/utils');
+var utils = require('./../../utils/utils');
 var campaignService = require('./../../service/campaignService.js');
 var request= require('request');
 var cheerio = require('cheerio');
