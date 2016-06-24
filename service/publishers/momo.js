@@ -30,8 +30,8 @@ momoService.prototype.getReport=function(startDate, endDate, type, callback) {
            for(var i=0;i<body.data.length;i++) {
               var date = body.data[i].time;
               var cost = body.data[i].fee;
-              var imp = body.data[i].display;
-              var click = body.data[i].click;
+              var imp = body.data[i].uniq_display;
+              var click = body.data[i].uniq_click;
               allDateDetails[i] = {publisher:"Momo", date: date, impression: imp, click:click, cost: cost};
            }
          } else {

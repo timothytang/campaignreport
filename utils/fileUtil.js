@@ -47,7 +47,9 @@ fileUtil.prototype.sendAsXlsxFile=function (response, data, fileName) {
 //        'Content-Disposition': 'attachment;filename='+fileName + '.xlsx'
     });    
     var obj =[{name: "data", data: xlsxData}]
+    console.log('Records number is: ' + xlsxData.length);
     var file = xlsx.build(obj); 
+    console.log('Build xlsx file successfully');
     response.write(file);
     response.end();    
 }

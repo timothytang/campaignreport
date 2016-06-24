@@ -39,7 +39,6 @@ router.post('/', function (req, res) {
  */
 function sendActualResult(res, xadResult, publisherCostDiff) {
 	var actualImlAndClick = {};
-	var i = 0;
 	if (xadResult && xadResult.length>0) {
 		async.each(xadResult,
 		          function (currentResult, callback) {
@@ -53,7 +52,6 @@ function sendActualResult(res, xadResult, publisherCostDiff) {
 		                          console.error('target URL: ' + targetURL);
 		                          actualImlAndClick[adgroupId+date]={actImp:null, actClick:null};
 		                        } else {
-		                          console.log("Get actual succeeded： " + targetURL)
 		                          $ = cheerio.load(body);
 		                          var tds = $('tr').eq(0).find('td');
 		                          var actualImp = tds.eq(3).text();
@@ -76,8 +74,6 @@ function sendActualResult(res, xadResult, publisherCostDiff) {
 		                        callback(null, 1);
 		                        
 		              });
-		              console.log("index is: " + i);
-		              i++;
 		          },
 		          function (err, result) {
 		            if (err) {
@@ -89,10 +85,8 @@ function sendActualResult(res, xadResult, publisherCostDiff) {
 		            for (var index in xadResult) {
 		            	var imlAndClick = actualImlAndClick[xadResult[index].adgroup_id + xadResult[index].campaign_date.stdFormat()];
 		            	var adgroupResult=buildActualResult(xadResult[index], imlAndClick.actImp, imlAndClick.actClick, publisherCostDiff);
-		            	console.log(adgroupResult);
 		            	actualResult.push(adgroupResult);
 		            }
-		            console.log("final: " + actualResult)
 		            fileUtil.sendAsXlsxFile(res,actualResult, null);
 		          }
 		        );		
