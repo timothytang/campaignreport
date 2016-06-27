@@ -44,3 +44,17 @@ Date.prototype.format = function(fmt)
 Date.prototype.stdFormat = function() {
     return this.format('yyyy-MM-dd');
 }
+
+
+var utils=function(){};
+
+utils.prototype.convertStrToNumber=function(str) {
+	if (str) {
+		str = str.replace(/,/g,'');
+		return Number(str);
+	} else {
+		return null;
+	}
+}
+
+module.exports=new utils();
