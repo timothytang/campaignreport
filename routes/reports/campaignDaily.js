@@ -39,6 +39,7 @@ router.post('/', function (req, res) {
  */
 function sendActualResult(res, xadResult, publisherCostDiff) {
 	var actualImlAndClick = {};
+	var actualResult = [];
 	if (xadResult && xadResult.length>0) {
 		async.each(xadResult,
 		          function (currentResult, callback) {
@@ -81,7 +82,6 @@ function sendActualResult(res, xadResult, publisherCostDiff) {
 		              // not return, still handling the partial processed result.
 		            }
 		            console.log('Actual click is retrieved for daily report');
-		        	var actualResult = [];
 		            for (var index in xadResult) {
 		            	var imlAndClick = actualImlAndClick[xadResult[index].adgroup_id + xadResult[index].campaign_date.stdFormat()];
 		            	var adgroupResult=buildActualResult(xadResult[index], imlAndClick.actImp, imlAndClick.actClick, publisherCostDiff);
