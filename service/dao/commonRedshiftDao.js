@@ -35,7 +35,9 @@ var redshiftDao=function(){};
  */
 redshiftDao.prototype.query=function(query, callback) {
 	var conString = config.redshiftConnection;
-	pg.connect(conString, function(err, client, done) {
+	console.log('before connecting!!!!');
+	pool.connect(function(err, client, done) {
+//	pg.connect(conString, function(err, client, done) {
 	    if (err) {
 			console.error('error fetching client from pool', err);
 			return callback(err, null);
