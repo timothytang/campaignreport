@@ -109,6 +109,9 @@ function buildActualResult(originalResult,actualImp, actualClick, publisherCostD
 		actualRevenue=Number(to2Fixed((revenueCPC*actualClick)));
 	} 
 	
+	if (!publisherCostDiff) {
+		publisherCostDiff=1.05; // the default diff gap will be set to 1.05, this is the average data based on May and June records in 2016.
+	}
 	var actualCost = null;
 	if (publisherCostDiff && xadCost) {
 		actualCost=Number(to2Fixed((xadCost*publisherCostDiff)));
